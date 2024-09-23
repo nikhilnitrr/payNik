@@ -119,9 +119,12 @@ router.get("/bulk", authMiddleware, async (req, res) => {
     })
 })
 
-router.get("/me", authMiddleware, (req, res) => {
+router.get("/me", authMiddleware, async (req, res) => {
+    const userDetail = await User.findOne({_id : req.userId})
     return res.status(200).json({
-        message : "Backend is healthy"
+        message : "Backend is healthy",
+        name : userDetail.firstName,
+        id : req.userId
     })
 })
 
