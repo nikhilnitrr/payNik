@@ -119,6 +119,12 @@ router.get("/bulk", authMiddleware, async (req, res) => {
     })
 })
 
+router.get("/me", authMiddleware, (req, res) => {
+    return res.status(200).json({
+        message : "Backend is healthy"
+    })
+})
+
 
 
 module.exports = router
