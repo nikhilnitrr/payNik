@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
@@ -18,4 +18,17 @@ const useHealthCheck = () => {
     },[])
 }
 
-export {useHealthCheck}
+const useDebounce = (inputValue, timeout) => {
+    const [debouncedValue, setDebouncedValue] = useState(inputValue)
+    useEffect(() => {
+        const value = setTimeout(() => {
+            setDebouncedValue(inputValue)
+        }, timeout)
+        return () => {
+            clearInterval(value)
+        }
+    },[inputValue, timeout])
+    return debouncedValue
+}
+
+export {useHealthCheck, useDebounce}

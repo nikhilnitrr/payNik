@@ -3,14 +3,16 @@ import { useEffect } from "react"
 import axios from "axios"
 import { filterAtom, usersAtom, idAtom } from "../store/atoms"
 import { useRecoilState, useRecoilValue } from "recoil"
+import { useDebounce } from "../customHooks"
 
 
 const Users = () => {
     const [filter, setFilter] = useRecoilState(filterAtom)
     const [users, setUsers] = useRecoilState(usersAtom)
     const id = useRecoilValue(idAtom)
+    const debouncedFilterValue = useDebounce(filter, 500)
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/v1/user/bulk?filter=${filter}`, {
+        axios.get(`http://localhost:3000/api/v1/user/bulk?filter=${debouncedFilterValue}`, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }
@@ -18,7 +20,7 @@ const Users = () => {
             .then((response) => {
                 setUsers(response.data.users)
             })
-    }, [filter])
+    }, [debouncedFilterValue])
     return <div className="p-2">
         <div className="text-1xl font-semibold">Users</div>
         <input onChange={(e) => {
