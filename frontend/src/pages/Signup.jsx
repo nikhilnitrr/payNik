@@ -8,7 +8,7 @@ import { firstNameAtom, lastNameAtom, userNameAtom, passwordAtom } from "../stor
 import {useRecoilState } from "recoil"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { useHealthCheck } from "../customHooks"
 
 export const Signup = () => {
     const [firstName, setFirstName] = useRecoilState(firstNameAtom)
@@ -17,18 +17,8 @@ export const Signup = () => {
     const [password, setPassword] = useRecoilState(passwordAtom)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/user/me", {
-            headers : {
-               Authorization : "Bearer " + localStorage.getItem("token") 
-            }
-        })
-        .then((response) => {
-            if(response.status === 200){
-                navigate("/dashboard")
-            }
-        })
-    },[])
+    // custom hook
+    useHealthCheck()
 
     return (
         <div className="bg-slate-200 h-screen flex justify-center">
